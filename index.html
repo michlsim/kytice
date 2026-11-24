@@ -755,6 +755,68 @@
   const letter = { open: false, at: 0 };
   const letterText = document.getElementById('letter-text');
 
+  // ---------- after the letter: a little joke ----------
+  // The first time she closes the letter, a meme prints itself in, drawn in the same characters as the bouquet.
+  const MEME_SRC = 'data:image/jpeg;base64,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';
+  const MEME_CAPTION = "Nooo don't turn 25 your so sexy aha";
+  const MEME_BAND = [0.258, 0.338];   // where the caption bar sits on the photo, as a share of its height
+  const MEME_CLOSE = '(klepnutím kamkoli zavřeš)';
+  const MEME_RAMP = ':-+*#%@';   // denser characters than the flowers, so the colours carry the photo
+  const meme = { img: null, open: false, shown: false, ready: false, at: 0, pendingAt: 0, text: null };
+  { const im = new Image(); im.onload = () => { meme.img = im; }; im.src = MEME_SRC; }
+  const memeCanvas = document.createElement('canvas');
+  const memeCtx = memeCanvas.getContext('2d', { willReadFrequently: true });
+  let memeCells = null;   // the photo sampled to one pixel per character cell, for the current grid
+  function sampleMeme() {
+    const stretch = (meme.img.height / meme.img.width) * (cellW / cellH);   // character cells are taller than wide
+    let w = Math.min(cols - 8, 110), h = Math.round(w * stretch);
+    if (h > rows - 12) { h = rows - 12; w = Math.round(h / stretch); }
+    memeCanvas.width = w; memeCanvas.height = h;
+    memeCtx.drawImage(meme.img, 0, 0, w, h);
+    const data = memeCtx.getImageData(0, 0, w, h).data;
+    // stretch the contrast (2nd to 98th percentile of brightness) so the face reads clearly in characters
+    const lum = [];
+    for (let i = 0; i < data.length; i += 4) lum.push(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+    const sorted = lum.slice().sort((a, b) => a - b);
+    const lo = sorted[Math.floor(sorted.length * 0.02)], hi = sorted[Math.floor(sorted.length * 0.98)];
+    const span = Math.max(1, hi - lo);
+    const cells = [];
+    for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+      const L = Math.min(1, Math.max(0, (lum[p] - lo) / span));
+      const k = Math.round(Math.pow(L, 0.85) * (MEME_RAMP.length - 1));
+      const fix = (v) => Math.min(255, Math.max(0, ((v - lo) / span) * 235 + 20));
+      cells.push({ ch: MEME_RAMP[k], color: [fix(data[i]), fix(data[i + 1]), fix(data[i + 2])] });
+    }
+    memeCells = { w, h, cols, rows, cells };
+  }
+  function drawMeme(t) {
+    if (!memeCells || memeCells.cols !== cols || memeCells.rows !== rows) sampleMeme();
+    const { w, h, cells } = memeCells;
+    const c0 = Math.round((cols - w) / 2), r0 = Math.round((rows - h) / 2) - 1;
+    const age = t - meme.at;
+    const printed = reduce ? h : Math.floor(h * smooth(0, 1, age / 0.9));   // it prints in, line by line
+    for (let r = -1; r <= h; r++) {             // the same gold frame as the letter
+      for (let c = -2; c <= w + 1; c++) {
+        const edgeR = r === -1 || r === h, edgeC = c === -2 || c === w + 1;
+        let ch = ' ';
+        if (edgeR && edgeC) ch = r === -1 ? '.' : "'";
+        else if (edgeR) ch = '-';
+        else if (edgeC) ch = '|';
+        put(c0 + c, r0 + r, ch, LETTER_COLORS.frame, 1, true);
+      }
+    }
+    const b0 = Math.round(MEME_BAND[0] * h), b1 = Math.round(MEME_BAND[1] * h);
+    for (let r = 0; r < printed; r++) {
+      if (r >= b0 && r < b1) continue;          // the caption bar stays dark
+      for (let c = 0; c < w; c++) { const cell = cells[r * w + c]; put(c0 + c, r0 + r, cell.ch, cell.color, 1, true); }
+    }
+    meme.text = printed >= b1 ? {
+      x: offX + (c0 + w / 2) * cellW, y: offY + (r0 + (b0 + b1) / 2) * cellH, maxW: w * cellW - 16,
+      closeY: offY + (r0 + h + 2) * cellH, fade: smooth(0.5, 0.9, age), closeFade: smooth(1.2, 1.6, age),
+    } : null;
+    return age > 1.2;
+  }
+
   // ---------- drawing ----------
   let d;   // colorImg.data for the current frame
   function put(c, r, ch, color, k, overwrite) {
@@ -817,7 +879,7 @@
     renderer.setRenderTarget(null);
 
     d = colorImg.data;
-    const W = cols * SS, last = RAMP.length - 1, dim = letter.open ? 0.3 : 1;
+    const W = cols * SS, last = RAMP.length - 1, dim = letter.open || meme.open ? 0.3 : 1;
     // 1. the bouquet
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -843,7 +905,7 @@
     // 2. the envelope: slightly bigger characters, always BEHIND the bouquet, wrapped in twinkling sparkles
     bigGlyphs.length = 0;
     env.visible = 0;
-    if (env.shown > 0 && !letter.open) {
+    if (env.shown > 0 && !letter.open && !meme.open) {
       const ec = env.c, er = env.r;
       // is any cell under this footprint taken by the bouquet? (bouquet glyphs are > 0; blanks are 0)
       const behind = (c0, r0) => {
@@ -905,6 +967,7 @@
     }
     // 4. the letter, on top of everything
     if (letter.open) letter.typing = !drawLetter(t);   // still typing until every line is out
+    if (meme.open) meme.ready = drawMeme(t);
     // 5. paint: white glyphs first, then tint them all in one pass
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -928,6 +991,18 @@
       if (g.scale !== scale) { scale = g.scale; ctx.font = `700 ${fontPx * scale * dpr}px ${MONO}`; }
       ctx.fillStyle = `rgb(${g.color[0] | 0},${g.color[1] | 0},${g.color[2] | 0})`;
       ctx.fillText(g.ch, g.x * dpr, g.y * dpr);
+    }
+    // 7a. the meme's caption (white, in its dark bar) and how to close it, in the hint's font
+    if (meme.open && meme.text) {
+      const m = meme.text;
+      ctx.font = `500 ${QUIP_PX * dpr}px ${MONO}`;
+      const full = ctx.measureText(MEME_CAPTION).width / dpr;
+      if (full > m.maxW) ctx.font = `500 ${QUIP_PX * m.maxW / full * dpr}px ${MONO}`;
+      ctx.fillStyle = `rgba(255,255,255,${m.fade})`;
+      ctx.fillText(MEME_CAPTION, m.x * dpr, m.y * dpr);
+      ctx.font = `500 ${QUIP_PX * dpr}px ${MONO}`;
+      ctx.fillStyle = `rgba(${LETTER_COLORS.muted.map((v) => v | 0).join(',')},${m.closeFade})`;
+      ctx.fillText(MEME_CLOSE, m.x * dpr, m.closeY * dpr);
     }
     // 7. the playful lines: same font as the hint at the bottom, rising from the tap and fading away
     if (quips.length) {
@@ -1004,7 +1079,7 @@
     dodge.count++;
   }
   function overEnvelope(e) {
-    if (env.shown < 0.5 || env.visible < 0.3 || letter.open) return false;
+    if (env.shown < 0.5 || env.visible < 0.3 || letter.open || meme.open) return false;
     if (clock.elapsedTime - dodge.at < DODGE_TIME) return false;   // mid-swoosh
     const p = cellAt(e);
     return p.c > env.c - 2 && p.c < env.c + ENV_W + 2 && p.r > env.r - 1.5 && p.r < env.r + ENV_H + 1.5;
@@ -1028,8 +1103,15 @@
     dragging = false;
     const tap = Math.hypot(e.clientX - downX, e.clientY - downY) < 10 && performance.now() - downT < 600;
     if (!tap) return;
+    if (meme.open) {
+      if (meme.ready) { meme.open = false; letterText.textContent = ''; }
+      return;
+    }
     if (letter.open) {
-      if (!letter.typing) { letter.open = false; letterText.textContent = ''; }
+      if (!letter.typing) {
+        letter.open = false; letterText.textContent = '';
+        if (!meme.shown && meme.img) meme.pendingAt = clock.elapsedTime + 0.5;   // ...and then the joke
+      }
     } else if (overEnvelope(e)) {
       if (dodge.count < DODGE_LINES.length) {   // not yet!
         const p = cellAt(e);
@@ -1067,6 +1149,10 @@
     env.a = (reduce ? 0.03 : 0.07) * (t - envStart) + 2.2 + dodgeOffset(t);
     const pos = envPos(env.a);
     env.c = pos.c; env.r = pos.r;
+    if (meme.pendingAt && t >= meme.pendingAt) {
+      meme.pendingAt = 0; meme.open = meme.shown = true; meme.at = t; meme.ready = false;
+      letterText.textContent = MEME_CAPTION;
+    }
     updateParticles(dt, t);
     updateDust(dt);
     draw(t);
